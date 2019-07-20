@@ -79,7 +79,7 @@ console.log(🦆); // 2 legs
 console.log(🐕===🦆); // false
 
 ```
-Immutability sử dụng một state duy nhất, không ảnh hưởng (no side effect) đến các state khác trong ứng dụng. Điều này mang lại rất nhiều benefits như dễ dàng test, quản lý. 
+Immutability sử dụng một state duy nhất, không ảnh hưởng (no side effect) đến các state khác trong ứng dụng. Điều này mang lại rất nhiều benefit như dễ dàng cho việc test, state management.
 
 
 ## Disadvantages of Mutability and Immutability
@@ -97,7 +97,7 @@ Immutability: Immutability là rất tốt, nó tránh được nhiều bugs nh�
 
 Theo cách Immutability thông thường, mỗi khi thay đổi một thuộc tính nào đó, chúng ta phải clone toàn bộ `Object` hoặc `Array` thành một bản sao, sau đó thực hiện modify trên chính bản sao đó. 
 
-Ex:
+Example:
 
 ```
 zoo = [🐕, 🐈, 🐍, 🐖, 🐇, 🦅]
@@ -122,9 +122,45 @@ Còn nếu sử dụng theo Structure Sharing thì nó sẽ như thế này:
                     /\     /\      /\           /\
                    🐕🐈   🐍🐖   🐇🦅         👽🐖
 ```
-newZoo tái sử dụng các root 01, 03, chỉ modify duy nhất root 03 và thay thế 🐍 => 👽
+newZoo tái sử dụng các root `01`, `03`, chỉ modify duy nhất root `02` và thay thế 🐍 => 👽
 
-Lúc này zoo và newZoo là 2 collection hoàn toàn độc lập và tách biệt.
+Lúc này zoo và newZoo là 2 collection hoàn toàn độc lập và tách biệt. Chúng ta có thể thấy structure data theo cách này tiết kiệm đc rất nhiều memory. 
+
+Ý tưởng và cấu trúc thì đã rõ ràng, vậy thì làm sao chúng ta có thể implement vào code? 
+
+Thật may mắn là hiện tại có khá nhiều thư viện hỗ trợ chúng ta thực hiện công việc này. [Immutablejs](https://github.com/immutable-js/immutable-js) và [mori](https://github.com/swannodette/mori) là 2 thư viện phổ biến nhất implement immutability sử dụng cấu trúc Structure Sharing. 
+
+
+Ví dụ về Immutablejs:
+```javascript
+import Immutable, { set } from "immutable";
+
+const list = Immutable.List([1, 2, 3, 4]);
+
+// Get second element
+const secondElement = list.get(1);
+console.log(secondElement); // 2
+
+// Update List
+const updatedList = set(list, 2, 100);
+
+console.log(updatedList.toJS()); // [1, 2, 100, 4]
+console.log(list.toJS()); // [1, 2, 3, 4]
+```
+
+## Conclusion
+
+Recap
+
+```
+Mutability: 😣
+
+Immutability: 😍
+
+Copying: 🐌 &  🐘
+
+Sharing: 🚀
+```
 
 
 
